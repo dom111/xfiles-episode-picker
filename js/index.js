@@ -1,48 +1,5 @@
-const getWatched = () => {
-  const watched = localStorage.getItem('watched');
-
-  return watched ? JSON.parse(watched) : [];
-};
-
-const setWatched = (watched) =>
-  localStorage.setItem('watched', JSON.stringify(watched));
-
-const addWatched = (id) => {
-  const watched = getWatched();
-
-  if (!isWatched(id)) {
-    watched.push(String(id));
-
-    setWatched(watched);
-  }
-};
-
-const removeFromList = (list, value) => {
-  const index = list.indexOf(value);
-
-  if (index !== -1) {
-    list.splice(index, 1);
-  }
-
-  return list;
-};
-
-const removeWatched = (id) => {
-  if (!isWatched(id)) {
-    return;
-  }
-
-  const watched = getWatched();
-
-  removeFromList(watched, String(id));
-  setWatched(watched);
-};
-
-const isWatched = (id) => {
-    const watched = getWatched();
-
-    return watched.includes(String(id));
-};
+import {addWatched, getOptions, getWatched, isWatched, removeWatched, setOptions} from "./storage.js";
+import {emptyElement, getCumulativeOffsetTop, pickRandom, removeFromList} from "./utilities.js";
 
 const filterEpisodes = (episodes) => {
   const options = getOptions();
@@ -65,32 +22,6 @@ const filterEpisodes = (episodes) => {
 
   return episodes;
 };
-
-const emptyElement = (element) => {
-    while (element.hasChildNodes()) {
-        element.removeChild(element.firstChild);
-    }
-};
-
-const getOptions = () => {
-  const options = localStorage.getItem('options');
-
-  if (options) {
-    return JSON.parse(options);
-  }
-
-  return {
-    'episodeTypes': ['motw'],
-    'excludeWatched': true,
-    'minRating': 7,
-    'season': ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
-  };
-};
-
-const setOptions = (options) =>
-  localStorage.setItem('options', JSON.stringify(options));
-
-const pickRandom = (array) => array[Math.floor(Math.random() * array.length)];
 
 const episodeData = fetch('data/episode-list-data.json')
     .then((response) => response.json());
@@ -123,16 +54,6 @@ const episodeElement = (episode) => {
 
   return container.firstElementChild;
 };
-
-const getCumulativeOffsetTop = (element) => {
-  let top = element.offsetTop;
-
-  while (element = element.offsetParent) {
-    top += element.offsetTop;
-  }
-
-  return top;
-}
 
 // on ready
 document.addEventListener('DOMContentLoaded', async () => {

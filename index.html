@@ -1,118 +1,131 @@
 <!DOCTYPE html>
 <html lang="en" color-scheme="dark">
 <head>
-    <title>X-Files Monster of the week episode picker</title>
+    <title>X-Files episode picker</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
     <header>
-        <h1>X-Files Episode Picker</h1>
+        <h1>X-Files episode picker</h1>
     </header>
     <main class="loading">
         <section>
-            <p>Click the button below to get a random Monster of the Week episode from the X-Files.</p>
+            <p>Click the button below to get a random X-Files episode.</p>
             <p>
                 <button class="get-episode">Get Random Episode</button>
                 <button class="browse">I just want to browse...</button>
+                <button class="search">Search</button>
             </p>
 
             <p>
                 <a href="javascript:void(0)" class="show-filters">Show random episode filters...</a>
                 <a href="javascript:void(0)" class="hide-filters" hidden>Hide filters...</a>
             </p>
-            <section class="filters" hidden>
-                <fieldset>
-                    <legend>Use your data?</legend>
-                    <label>
-                        <input type="checkbox" class="filter" data-filter="watched">
-                        Include already watched episodes (<a href="javascript:void(0)" class="view-watched">view watched list</a>)
-                    </label>
-                </fieldset>
-                <fieldset>
-                    <legend>Episode type</legend>
+<!--            <section class="filters" hidden>-->
+<!--                <fieldset>-->
+<!--                    <legend>Use your data?</legend>-->
+<!--                    <label>-->
+<!--                        <input type="checkbox" class="filter" data-filter="watched">-->
+<!--                        Include already watched episodes (<a href="javascript:void(0)" class="view-watched">view watched list</a>)-->
+<!--                    </label>-->
+<!--                </fieldset>-->
+<!--                <fieldset>-->
+<!--                    <legend>Episode type</legend>-->
 
-                    <label>
-                        <input type="checkbox" class="filter" data-filter="motw">
-                        Monster of the Week
-                    </label>
+<!--                    <label>-->
+<!--                        <input type="checkbox" class="filter" data-filter="motw">-->
+<!--                        Monster of the Week-->
+<!--                    </label>-->
 
-                    <label>
-                        <input type="checkbox" class="filter" data-filter="mythology">
-                        Mythology
-                    </label>
-                </fieldset>
+<!--                    <label>-->
+<!--                        <input type="checkbox" class="filter" data-filter="mythology">-->
+<!--                        Mythology-->
+<!--                    </label>-->
+<!--                </fieldset>-->
 
-                <fieldset>
-                    <legend>Season</legend>
+<!--                <fieldset>-->
+<!--                    <legend>Season</legend>-->
 
-                    <label>
-                        <input type="checkbox" class="filter" data-filter="season" data-season="1">
-                        Season 1
-                    </label>
+<!--                    <label>-->
+<!--                        <input type="checkbox" class="filter" data-filter="season" data-season="1">-->
+<!--                        Season 1-->
+<!--                    </label>-->
 
-                    <label>
-                        <input type="checkbox" class="filter" data-filter="season" data-season="2">
-                        Season 2
-                    </label>
-                    
-                    <label>
-                        <input type="checkbox" class="filter" data-filter="season" data-season="3">
-                        Season 3
-                    </label>
-                    
-                    <label>
-                        <input type="checkbox" class="filter" data-filter="season" data-season="4">
-                        Season 4
-                    </label>
-                    
-                    <label>
-                        <input type="checkbox" class="filter" data-filter="season" data-season="5">
-                        Season 5
-                    </label>
-                    
-                    <label>
-                        <input type="checkbox" class="filter" data-filter="season" data-season="6">
-                        Season 6
-                    </label>
-                        
-                    <label>
-                        <input type="checkbox" class="filter" data-filter="season" data-season="7">
-                        Season 7
-                    </label>
-                    
-                    <label>
-                        <input type="checkbox" class="filter" data-filter="season" data-season="8">
-                        Season 8
-                    </label>
-                    
-                    <label>
-                        <input type="checkbox" class="filter" data-filter="season" data-season="9">
-                        Season 9
-                    </label>
-                    
-                    <label>
-                        <input type="checkbox" class="filter" data-filter="season">
-                        Season 10
-                    </label>
+<!--                    <label>-->
+<!--                        <input type="checkbox" class="filter" data-filter="season" data-season="2">-->
+<!--                        Season 2-->
+<!--                    </label>-->
+<!--                    -->
+<!--                    <label>-->
+<!--                        <input type="checkbox" class="filter" data-filter="season" data-season="3">-->
+<!--                        Season 3-->
+<!--                    </label>-->
+<!--                    -->
+<!--                    <label>-->
+<!--                        <input type="checkbox" class="filter" data-filter="season" data-season="4">-->
+<!--                        Season 4-->
+<!--                    </label>-->
+<!--                    -->
+<!--                    <label>-->
+<!--                        <input type="checkbox" class="filter" data-filter="season" data-season="5">-->
+<!--                        Season 5-->
+<!--                    </label>-->
+<!--                    -->
+<!--                    <label>-->
+<!--                        <input type="checkbox" class="filter" data-filter="season" data-season="6">-->
+<!--                        Season 6-->
+<!--                    </label>-->
+<!--                        -->
+<!--                    <label>-->
+<!--                        <input type="checkbox" class="filter" data-filter="season" data-season="7">-->
+<!--                        Season 7-->
+<!--                    </label>-->
+<!--                    -->
+<!--                    <label>-->
+<!--                        <input type="checkbox" class="filter" data-filter="season" data-season="8">-->
+<!--                        Season 8-->
+<!--                    </label>-->
+<!--                    -->
+<!--                    <label>-->
+<!--                        <input type="checkbox" class="filter" data-filter="season" data-season="9">-->
+<!--                        Season 9-->
+<!--                    </label>-->
+<!--                    -->
+<!--                    <label>-->
+<!--                        <input type="checkbox" class="filter" data-filter="season">-->
+<!--                        Season 10-->
+<!--                    </label>-->
 
-                    <label>
-                        <input type="checkbox" class="filter" data-filter="season" data-season="11">
-                        Season 11
-                    </label>
-                </fieldset>
+<!--                    <label>-->
+<!--                        <input type="checkbox" class="filter" data-filter="season" data-season="11">-->
+<!--                        Season 11-->
+<!--                    </label>-->
+<!--                </fieldset>-->
 
-                <fieldset>
-                    <legend>Minimum rating</legend>
-                    <label>
-                        <input type="range" min="0" max="10" step="0.1" value="7" data-filter="rating">
-                        <span class="rating-value">7</span>
-                    </label>
-                </fieldset>
-            </section>
+<!--                <fieldset>-->
+<!--                    <legend>Minimum rating</legend>-->
+<!--                    <label>-->
+<!--                        <input type="range" min="0" max="10" step="0.1" value="7" data-filter="rating" list="markers">-->
+<!--                        <span class="rating-value">7</span>-->
+<!--                        <datalist id="markers">-->
+<!--                            <option value="0"></option>-->
+<!--                            <option value="1"></option>-->
+<!--                            <option value="2"></option>-->
+<!--                            <option value="3"></option>-->
+<!--                            <option value="4"></option>-->
+<!--                            <option value="5"></option>-->
+<!--                            <option value="6"></option>-->
+<!--                            <option value="7"></option>-->
+<!--                            <option value="8"></option>-->
+<!--                            <option value="9"></option>-->
+<!--                            <option value="10"></option>-->
+<!--                        </datalist>-->
+<!--                    </label>-->
+<!--                </fieldset>-->
+<!--            </section>-->
         </section>
-        <!-- filters -->
 
         <section class="episode-information" hidden></section>
 
@@ -161,7 +174,111 @@
             </p>
         </section>
     </template>
-    <script src="js/episode-details.js"></script>
-    <script src="js/index.js"></script>
+    <template id="filters">
+        <section class="filters" hidden>
+            <fieldset>
+                <legend>Use your data?</legend>
+                <label>
+                    <input type="checkbox" class="filter" data-filter="watched">
+                    Include already watched episodes (<a href="javascript:void(0)" class="view-watched">view watched list</a>)
+                </label>
+            </fieldset>
+            <fieldset>
+                <legend>Episode type</legend>
+
+                <label>
+                    <input type="checkbox" class="filter" data-filter="motw">
+                    Monster of the Week
+                </label>
+
+                <label>
+                    <input type="checkbox" class="filter" data-filter="mythology">
+                    Mythology
+                </label>
+            </fieldset>
+
+            <fieldset>
+                <legend>Season</legend>
+
+                <label>
+                    <input type="checkbox" class="filter" data-filter="season" data-season="1">
+                    Season 1
+                </label>
+
+                <label>
+                    <input type="checkbox" class="filter" data-filter="season" data-season="2">
+                    Season 2
+                </label>
+
+                <label>
+                    <input type="checkbox" class="filter" data-filter="season" data-season="3">
+                    Season 3
+                </label>
+
+                <label>
+                    <input type="checkbox" class="filter" data-filter="season" data-season="4">
+                    Season 4
+                </label>
+
+                <label>
+                    <input type="checkbox" class="filter" data-filter="season" data-season="5">
+                    Season 5
+                </label>
+
+                <label>
+                    <input type="checkbox" class="filter" data-filter="season" data-season="6">
+                    Season 6
+                </label>
+
+                <label>
+                    <input type="checkbox" class="filter" data-filter="season" data-season="7">
+                    Season 7
+                </label>
+
+                <label>
+                    <input type="checkbox" class="filter" data-filter="season" data-season="8">
+                    Season 8
+                </label>
+
+                <label>
+                    <input type="checkbox" class="filter" data-filter="season" data-season="9">
+                    Season 9
+                </label>
+
+                <label>
+                    <input type="checkbox" class="filter" data-filter="season">
+                    Season 10
+                </label>
+
+                <label>
+                    <input type="checkbox" class="filter" data-filter="season" data-season="11">
+                    Season 11
+                </label>
+            </fieldset>
+
+            <fieldset>
+                <legend>Minimum rating</legend>
+                <label>
+                    <input type="range" min="0" max="10" step="0.1" value="7" data-filter="rating" list="markers">
+                    <span class="rating-value">7</span>
+                    <datalist id="markers">
+                        <option value="0"></option>
+                        <option value="1"></option>
+                        <option value="2"></option>
+                        <option value="3"></option>
+                        <option value="4"></option>
+                        <option value="5"></option>
+                        <option value="6"></option>
+                        <option value="7"></option>
+                        <option value="8"></option>
+                        <option value="9"></option>
+                        <option value="10"></option>
+                    </datalist>
+                </label>
+            </fieldset>
+        </section>
+    </template>
+    <script src="js/components/episode-details.js" type="module"></script>
+    <script src="js/index.js" type="module"></script>
 </body>
 </html>
