@@ -92,7 +92,7 @@ const setOptions = (options) =>
 
 const pickRandom = (array) => array[Math.floor(Math.random() * array.length)];
 
-const episodeData = fetch('/data/episode-list-data.json')
+const episodeData = fetch('data/episode-list-data.json')
     .then((response) => response.json());
 
 const getEpisodeData = async () => episodeData;
