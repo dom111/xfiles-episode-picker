@@ -46,11 +46,13 @@ const filterEpisodes = (episodes, options) => {
     const words = options.text.trim().split(/\s+/);
 
     episodes = episodes.filter((episode) =>
-      words.some((word) =>
-        textFields.some((textField) =>
-          episode[textField].match(new RegExp(word, "i")),
-        ),
-      ),
+      words.some((word) => {
+        const regex = new RegExp(word, "i");
+
+        return textFields.some((textField) =>
+          episode[textField].match(regex),
+        );
+      }),
     );
   }
 
