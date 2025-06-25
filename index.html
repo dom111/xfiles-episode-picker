@@ -1,284 +1,268 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" color-scheme="dark">
-<head>
+  <head>
     <title>X-Files episode picker</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/index.css">
-</head>
-<body>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/index.css" />
+  </head>
+  <body>
     <header>
-        <h1>X-Files episode picker</h1>
+      <h1>X-Files episode picker</h1>
     </header>
     <main class="loading">
-        <section>
-            <p>Click the button below to get a random X-Files episode.</p>
-            <p>
-                <button class="get-episode">Get Random Episode</button>
-                <button class="browse">I just want to browse...</button>
-                <button class="search">Search</button>
-            </p>
+      <section>
+        <p>Click the button below to get a random X-Files episode.</p>
+        <p>
+          <button class="get-episode">Get Random Episode</button>
+          <button class="browse">I just want to browse...</button>
+        </p>
 
-            <p>
-                <a href="javascript:void(0)" class="show-filters">Show random episode filters...</a>
-                <a href="javascript:void(0)" class="hide-filters" hidden>Hide filters...</a>
-            </p>
-<!--            <section class="filters" hidden>-->
-<!--                <fieldset>-->
-<!--                    <legend>Use your data?</legend>-->
-<!--                    <label>-->
-<!--                        <input type="checkbox" class="filter" data-filter="watched">-->
-<!--                        Include already watched episodes (<a href="javascript:void(0)" class="view-watched">view watched list</a>)-->
-<!--                    </label>-->
-<!--                </fieldset>-->
-<!--                <fieldset>-->
-<!--                    <legend>Episode type</legend>-->
+        <p>
+          <a href="javascript:void(0)" class="show-filters">
+            Show random episode filters...
+          </a>
+          <a href="javascript:void(0)" class="hide-filters" hidden>
+            Hide filters...
+          </a>
+        </p>
+        <div class="filters-container" hidden></div>
+      </section>
 
-<!--                    <label>-->
-<!--                        <input type="checkbox" class="filter" data-filter="motw">-->
-<!--                        Monster of the Week-->
-<!--                    </label>-->
+      <section class="episode-information" hidden></section>
 
-<!--                    <label>-->
-<!--                        <input type="checkbox" class="filter" data-filter="mythology">-->
-<!--                        Mythology-->
-<!--                    </label>-->
-<!--                </fieldset>-->
+      <section class="browse-episodes" hidden>
+        <header>
+          <p>
+            Season
 
-<!--                <fieldset>-->
-<!--                    <legend>Season</legend>-->
-
-<!--                    <label>-->
-<!--                        <input type="checkbox" class="filter" data-filter="season" data-season="1">-->
-<!--                        Season 1-->
-<!--                    </label>-->
-
-<!--                    <label>-->
-<!--                        <input type="checkbox" class="filter" data-filter="season" data-season="2">-->
-<!--                        Season 2-->
-<!--                    </label>-->
-<!--                    -->
-<!--                    <label>-->
-<!--                        <input type="checkbox" class="filter" data-filter="season" data-season="3">-->
-<!--                        Season 3-->
-<!--                    </label>-->
-<!--                    -->
-<!--                    <label>-->
-<!--                        <input type="checkbox" class="filter" data-filter="season" data-season="4">-->
-<!--                        Season 4-->
-<!--                    </label>-->
-<!--                    -->
-<!--                    <label>-->
-<!--                        <input type="checkbox" class="filter" data-filter="season" data-season="5">-->
-<!--                        Season 5-->
-<!--                    </label>-->
-<!--                    -->
-<!--                    <label>-->
-<!--                        <input type="checkbox" class="filter" data-filter="season" data-season="6">-->
-<!--                        Season 6-->
-<!--                    </label>-->
-<!--                        -->
-<!--                    <label>-->
-<!--                        <input type="checkbox" class="filter" data-filter="season" data-season="7">-->
-<!--                        Season 7-->
-<!--                    </label>-->
-<!--                    -->
-<!--                    <label>-->
-<!--                        <input type="checkbox" class="filter" data-filter="season" data-season="8">-->
-<!--                        Season 8-->
-<!--                    </label>-->
-<!--                    -->
-<!--                    <label>-->
-<!--                        <input type="checkbox" class="filter" data-filter="season" data-season="9">-->
-<!--                        Season 9-->
-<!--                    </label>-->
-<!--                    -->
-<!--                    <label>-->
-<!--                        <input type="checkbox" class="filter" data-filter="season">-->
-<!--                        Season 10-->
-<!--                    </label>-->
-
-<!--                    <label>-->
-<!--                        <input type="checkbox" class="filter" data-filter="season" data-season="11">-->
-<!--                        Season 11-->
-<!--                    </label>-->
-<!--                </fieldset>-->
-
-<!--                <fieldset>-->
-<!--                    <legend>Minimum rating</legend>-->
-<!--                    <label>-->
-<!--                        <input type="range" min="0" max="10" step="0.1" value="7" data-filter="rating" list="markers">-->
-<!--                        <span class="rating-value">7</span>-->
-<!--                        <datalist id="markers">-->
-<!--                            <option value="0"></option>-->
-<!--                            <option value="1"></option>-->
-<!--                            <option value="2"></option>-->
-<!--                            <option value="3"></option>-->
-<!--                            <option value="4"></option>-->
-<!--                            <option value="5"></option>-->
-<!--                            <option value="6"></option>-->
-<!--                            <option value="7"></option>-->
-<!--                            <option value="8"></option>-->
-<!--                            <option value="9"></option>-->
-<!--                            <option value="10"></option>-->
-<!--                        </datalist>-->
-<!--                    </label>-->
-<!--                </fieldset>-->
-<!--            </section>-->
-        </section>
-
-        <section class="episode-information" hidden></section>
-
-        <section class="browse-episodes" hidden>
-            <header>
-                <p>
-                    Season
-
-                    <button data-season="1">1</button>
-                    <button data-season="2">2</button>
-                    <button data-season="3">3</button>
-                    <button data-season="4">4</button>
-                    <button data-season="5">5</button>
-                    <button data-season="6">6</button>
-                    <button data-season="7">7</button>
-                    <button data-season="8">8</button>
-                    <button data-season="9">9</button>
-                    <button data-season="10">10</button>
-                    <button data-season="11">11</button>
-                </p>
-            </header>
-        </section>
-        <section class="episode-list" hidden></section>
+            <button data-season="1">1</button>
+            <button data-season="2">2</button>
+            <button data-season="3">3</button>
+            <button data-season="4">4</button>
+            <button data-season="5">5</button>
+            <button data-season="6">6</button>
+            <button data-season="7">7</button>
+            <button data-season="8">8</button>
+            <button data-season="9">9</button>
+            <button data-season="10">10</button>
+            <button data-season="11">11</button>
+          </p>
+        </header>
+      </section>
+      <section class="episode-list" hidden></section>
     </main>
 
     <footer>
-        &copy; 2025 dom111. Uses episode data downloaded from <a href="https://tvmaze.com/" rel="external">tvmaze.com</a> augmented with data from
-        <a href="https://en.wikipedia.org/" rel="external">Wikipedia</a>. Uses <a href="https://github.com/DigitallyTailored/Classless.css" rel="external">Classless.css</a>.
+      &copy; 2025 dom111. Uses episode data downloaded from
+      <a href="https://tvmaze.com/" rel="external">tvmaze.com</a> augmented with
+      data from
+      <a href="https://en.wikipedia.org/" rel="external">Wikipedia</a>. Uses
+      <a
+        href="https://github.com/DigitallyTailored/Classless.css"
+        rel="external"
+      >
+        Classless.css </a
+      >.
     </footer>
     <template id="episode-details">
-        <h2 class="title">
-            <slot name="title"></slot>
-            <em>(S:<slot name="season"></slot>, E:<slot name="episode"></slot>)</em>
-        </h2>
-        <section class="episode-info">
-            <p class="image" style="float: left; margin: 0 2em 0 0;"><slot name="image"></slot></p>
-            <p class="airdate"><strong>First aired</strong>: <slot name="airdate"></slot></p>
-            <div class="summary">
-                <p><strong><slot name="type"></slot></strong></p>
-                <slot name="summary"></slot>
-            </div>
-            <p class="rating"><strong>Rating</strong>: <slot name="rating"></slot></p>
-            <p class="actions">
-                <button data-action="mark-as-watched" hidden>Mark as watched</button>
-                <button data-action="remove-from-watched" hidden>Remove from watched</button>
-            </p>
-        </section>
+      <h2 class="title">
+        <slot name="title"></slot>
+        <em>(S:<slot name="season"></slot>, E:<slot name="episode"></slot>)</em>
+      </h2>
+      <section class="episode-info">
+        <p class="image" style="float: left; margin: 0 2em 0 0">
+          <slot name="image"></slot>
+        </p>
+        <p class="airdate">
+          <strong>First aired</strong>: <slot name="airdate"></slot>
+        </p>
+        <div class="summary">
+          <p>
+            <strong><slot name="type"></slot></strong>
+          </p>
+          <slot name="summary"></slot>
+        </div>
+        <p class="rating">
+          <strong>Rating</strong>: <slot name="rating"></slot>
+        </p>
+        <p class="actions">
+          <button data-action="mark-as-watched" hidden>Mark as watched</button>
+          <button data-action="remove-from-watched" hidden>
+            Remove from watched
+          </button>
+        </p>
+      </section>
     </template>
     <template id="filters">
-        <section class="filters" hidden>
-            <fieldset>
-                <legend>Use your data?</legend>
-                <label>
-                    <input type="checkbox" class="filter" data-filter="watched">
-                    Include already watched episodes (<a href="javascript:void(0)" class="view-watched">view watched list</a>)
-                </label>
-            </fieldset>
-            <fieldset>
-                <legend>Episode type</legend>
+      <div class="filters">
+        <fieldset>
+          <legend>Use your data?</legend>
+          <label>
+            <input type="checkbox" class="filter" data-filter="watched" />
+            Include already watched episodes (<a
+              href="javascript:void(0)"
+              class="view-watched"
+            >
+              view watched list </a
+            >)
+          </label>
+        </fieldset>
+        <fieldset>
+          <legend>Episode type</legend>
 
-                <label>
-                    <input type="checkbox" class="filter" data-filter="motw">
-                    Monster of the Week
-                </label>
+          <label>
+            <input type="checkbox" class="filter" data-filter="motw" />
+            Monster of the Week
+          </label>
 
-                <label>
-                    <input type="checkbox" class="filter" data-filter="mythology">
-                    Mythology
-                </label>
-            </fieldset>
+          <label>
+            <input type="checkbox" class="filter" data-filter="mythology" />
+            Mythology
+          </label>
+        </fieldset>
 
-            <fieldset>
-                <legend>Season</legend>
+        <fieldset>
+          <legend>Season</legend>
 
-                <label>
-                    <input type="checkbox" class="filter" data-filter="season" data-season="1">
-                    Season 1
-                </label>
+          <label>
+            <input
+              type="checkbox"
+              class="filter"
+              data-filter="season"
+              data-season="1"
+            />
+            Season 1
+          </label>
 
-                <label>
-                    <input type="checkbox" class="filter" data-filter="season" data-season="2">
-                    Season 2
-                </label>
+          <label>
+            <input
+              type="checkbox"
+              class="filter"
+              data-filter="season"
+              data-season="2"
+            />
+            Season 2
+          </label>
 
-                <label>
-                    <input type="checkbox" class="filter" data-filter="season" data-season="3">
-                    Season 3
-                </label>
+          <label>
+            <input
+              type="checkbox"
+              class="filter"
+              data-filter="season"
+              data-season="3"
+            />
+            Season 3
+          </label>
 
-                <label>
-                    <input type="checkbox" class="filter" data-filter="season" data-season="4">
-                    Season 4
-                </label>
+          <label>
+            <input
+              type="checkbox"
+              class="filter"
+              data-filter="season"
+              data-season="4"
+            />
+            Season 4
+          </label>
 
-                <label>
-                    <input type="checkbox" class="filter" data-filter="season" data-season="5">
-                    Season 5
-                </label>
+          <label>
+            <input
+              type="checkbox"
+              class="filter"
+              data-filter="season"
+              data-season="5"
+            />
+            Season 5
+          </label>
 
-                <label>
-                    <input type="checkbox" class="filter" data-filter="season" data-season="6">
-                    Season 6
-                </label>
+          <label>
+            <input
+              type="checkbox"
+              class="filter"
+              data-filter="season"
+              data-season="6"
+            />
+            Season 6
+          </label>
 
-                <label>
-                    <input type="checkbox" class="filter" data-filter="season" data-season="7">
-                    Season 7
-                </label>
+          <label>
+            <input
+              type="checkbox"
+              class="filter"
+              data-filter="season"
+              data-season="7"
+            />
+            Season 7
+          </label>
 
-                <label>
-                    <input type="checkbox" class="filter" data-filter="season" data-season="8">
-                    Season 8
-                </label>
+          <label>
+            <input
+              type="checkbox"
+              class="filter"
+              data-filter="season"
+              data-season="8"
+            />
+            Season 8
+          </label>
 
-                <label>
-                    <input type="checkbox" class="filter" data-filter="season" data-season="9">
-                    Season 9
-                </label>
+          <label>
+            <input
+              type="checkbox"
+              class="filter"
+              data-filter="season"
+              data-season="9"
+            />
+            Season 9
+          </label>
 
-                <label>
-                    <input type="checkbox" class="filter" data-filter="season">
-                    Season 10
-                </label>
+          <label>
+            <input type="checkbox" class="filter" data-filter="season" />
+            Season 10
+          </label>
 
-                <label>
-                    <input type="checkbox" class="filter" data-filter="season" data-season="11">
-                    Season 11
-                </label>
-            </fieldset>
+          <label>
+            <input
+              type="checkbox"
+              class="filter"
+              data-filter="season"
+              data-season="11"
+            />
+            Season 11
+          </label>
+        </fieldset>
 
-            <fieldset>
-                <legend>Minimum rating</legend>
-                <label>
-                    <input type="range" min="0" max="10" step="0.1" value="7" data-filter="rating" list="markers">
-                    <span class="rating-value">7</span>
-                    <datalist id="markers">
-                        <option value="0"></option>
-                        <option value="1"></option>
-                        <option value="2"></option>
-                        <option value="3"></option>
-                        <option value="4"></option>
-                        <option value="5"></option>
-                        <option value="6"></option>
-                        <option value="7"></option>
-                        <option value="8"></option>
-                        <option value="9"></option>
-                        <option value="10"></option>
-                    </datalist>
-                </label>
-            </fieldset>
-        </section>
+        <fieldset>
+          <legend>Minimum rating</legend>
+          <label>
+            <input
+              type="range"
+              min="0"
+              max="10"
+              step="0.1"
+              value="7"
+              data-filter="rating"
+              list="markers"
+            />
+            <span class="rating-value">7</span>
+            <datalist id="markers">
+              <option value="0"></option>
+              <option value="1"></option>
+              <option value="2"></option>
+              <option value="3"></option>
+              <option value="4"></option>
+              <option value="5"></option>
+              <option value="6"></option>
+              <option value="7"></option>
+              <option value="8"></option>
+              <option value="9"></option>
+              <option value="10"></option>
+            </datalist>
+          </label>
+        </fieldset>
+      </div>
     </template>
     <script src="js/components/episode-details.js" type="module"></script>
+    <script src="js/components/episode-filters.js" type="module"></script>
     <script src="js/index.js" type="module"></script>
-</body>
+  </body>
 </html>

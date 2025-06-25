@@ -14,14 +14,17 @@ export const emptyElement = (element) => {
   }
 };
 
-export const pickRandom = (array) => array[Math.floor(Math.random() * array.length)];
+export const pickRandom = (array) =>
+  array[Math.floor(Math.random() * array.length)];
 
 export const getCumulativeOffsetTop = (element) => {
   let top = element.offsetTop;
 
-  while (element = element.offsetParent) {
+  while ((element = element.offsetParent)) {
     top += element.offsetTop;
   }
 
   return top;
-}
+};
+
+export const escapeProperty = (string) => string.replace(/"/g, "&quot;");

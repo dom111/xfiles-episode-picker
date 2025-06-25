@@ -1,0 +1,22 @@
+{
+  "name": "xfiles-episode-picker",
+  "version": "0.1.0",
+  "description": "A small app to randomly pick an X-Files episode to watch.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dom111/xfiles-episode-picker.git"
+  },
+  "author": "dom111",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dom111/xfiles-episode-picker/issues"
+  },
+  "homepage": "https://github.com/dom111/xfiles-episode-picker#readme",
+  "dependencies": {
+    "prettier": "^3.3.3"
+  }
+}

@@ -1,13 +1,13 @@
-import {removeFromList} from "./utilities.js";
+import { removeFromList } from "./utilities.js";
 
 export const getWatched = () => {
-  const watched = localStorage.getItem('watched');
+  const watched = localStorage.getItem("watched");
 
   return watched ? JSON.parse(watched) : [];
 };
 
 export const setWatched = (watched) =>
-  localStorage.setItem('watched', JSON.stringify(watched));
+  localStorage.setItem("watched", JSON.stringify(watched));
 
 export const addWatched = (id) => {
   const watched = getWatched();
@@ -20,22 +20,22 @@ export const addWatched = (id) => {
 };
 
 export const getOptions = () => {
-  const options = localStorage.getItem('options');
+  const options = localStorage.getItem("options");
 
   if (options) {
     return JSON.parse(options);
   }
 
   return {
-    'episodeTypes': ['motw'],
-    'excludeWatched': true,
-    'minRating': 7,
-    'season': ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
+    episodeTypes: ["motw"],
+    excludeWatched: true,
+    minRating: 7,
+    season: ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
   };
 };
 
 export const setOptions = (options) =>
-  localStorage.setItem('options', JSON.stringify(options));
+  localStorage.setItem("options", JSON.stringify(options));
 
 export const removeWatched = (id) => {
   if (!isWatched(id)) {
