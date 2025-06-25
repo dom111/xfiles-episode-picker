@@ -1,5 +1,5 @@
 import Base from "./base.js";
-import { getCumulativeOffsetTop, removeFromList } from "../utilities.js";
+import { removeFromList } from "../utilities.js";
 
 export class EpisodeFilters extends Base {
   constructor() {
@@ -16,6 +16,7 @@ export class EpisodeFilters extends Base {
     clonedNode.appendChild(style);
 
     const options = this.getOptions(),
+      textInput = clonedNode.querySelector('input[data-filter="text"]'),
       includeWatched = clonedNode.querySelector('input[data-filter="watched"]'),
       viewWatched = clonedNode.querySelector(".view-watched"),
       includeMotw = clonedNode.querySelector('input[data-filter="motw"]'),
@@ -26,7 +27,59 @@ export class EpisodeFilters extends Base {
         'input[data-filter="season"]',
       ),
       minRating = clonedNode.querySelector('input[data-filter="rating"]'),
-      ratingValue = clonedNode.querySelector(".rating-value");
+      ratingValue = clonedNode.querySelector(".rating-value"),
+      hideText = this.dataset.hideText,
+      hideWatched = this.dataset.hideWatched,
+      hideEpisodeType = this.dataset.hideEpisodeType,
+      hideSeason = this.dataset.hideSeason,
+      hideRating = this.dataset.hideRating;
+
+    if (!hideText) {
+      clonedNode
+        .querySelector('fieldset[data-group="text"]')
+        .removeAttribute("hidden");
+    }
+
+    if (!hideWatched) {
+      clonedNode
+        .querySelector('fieldset[data-group="watched"]')
+        .removeAttribute("hidden");
+    }
+
+    if (!hideEpisodeType) {
+      clonedNode
+        .querySelector('fieldset[data-group="episode-type"]')
+        .removeAttribute("hidden");
+    }
+
+    if (!hideSeason) {
+      clonedNode
+        .querySelector('fieldset[data-group="season"]')
+        .removeAttribute("hidden");
+    }
+
+    if (!hideRating) {
+      clonedNode
+        .querySelector('fieldset[data-group="rating"]')
+        .removeAttribute("hidden");
+    }
+
+    if (options.text) {
+      textInput.value = options.text;
+    }
+
+    textInput.addEventListener("input", (event) => {
+      const options = this.getOptions(),
+        targetValue = event.target.value;
+
+      if (targetValue.length > 2) {
+        options.text = targetValue;
+      } else {
+        options.text = null;
+      }
+
+      this.setOptions(options);
+    });
 
     if (options.excludeWatched) {
       includeWatched.removeAttribute("checked");
@@ -42,48 +95,14 @@ export class EpisodeFilters extends Base {
       this.setOptions(options);
     });
 
-    viewWatched.addEventListener("mousedown", (event) => {
-      if (event.button !== 0) {
-        return;
-      }
-
-      event.preventDefault();
-
-      const watchedEpisodeIds = getWatched(),
-        informationElement = document.querySelector(".episode-information"),
-        browseElement = document.querySelector(".browse-episodes"),
-        episodeListElement = document.querySelector(".episode-list");
-
-      console.log(watchedEpisodeIds);
-
-      emptyElement(episodeListElement);
-
-      if (watchedEpisodeIds.length === 0) {
-        episodeListElement.innerHTML = "<p>No episodes watched yet.</p>";
-      } else {
-        episodeList
-          .filter((episode) => watchedEpisodeIds.includes(String(episode.id)))
-          .forEach((episode) =>
-            episodeListElement.append(episodeElement(episode)),
-          );
-      }
-
-      informationElement.setAttribute("hidden", "");
-      browseElement.setAttribute("hidden", "");
-      episodeListElement.removeAttribute("hidden");
-
-      window.scrollTo({
-        top: getCumulativeOffsetTop(episodeListElement),
-        behavior: "smooth",
-      });
-    });
+    viewWatched.addEventListener("mousedown", (event) => {});
 
     // handle episode types
     [
       ["motw", includeMotw],
       ["mythology", includeMythology],
     ].forEach(([type, element]) => {
-      if (options.episodeTypes.includes(type)) {
+      if (options.episodeTypes && options.episodeTypes.includes(type)) {
         element.setAttribute("checked", "");
       } else {
         element.removeAttribute("checked");
@@ -103,7 +122,10 @@ export class EpisodeFilters extends Base {
     });
 
     includeSeasons.forEach((seasonCheckbox) => {
-      if (options.season.includes(seasonCheckbox.dataset.season)) {
+      if (
+        options.season &&
+        options.season.includes(seasonCheckbox.dataset.season)
+      ) {
         seasonCheckbox.setAttribute("checked", "");
       } else {
         seasonCheckbox.removeAttribute("checked");
@@ -149,6 +171,7 @@ export class EpisodeFilters extends Base {
     }
 
     return {
+      text: null,
       episodeTypes: ["motw"],
       excludeWatched: true,
       minRating: 7,
@@ -168,6 +191,10 @@ export class EpisodeFilters extends Base {
 
   setOptions(options) {
     const optionsProp = JSON.stringify(options);
+
+    if (optionsProp === this.getAttribute("options")) {
+      return;
+    }
 
     this.setAttribute("options", optionsProp);
 

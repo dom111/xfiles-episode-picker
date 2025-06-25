@@ -38,6 +38,12 @@ fieldset label input {
   margin-right: calc(var(--spacing-base) / 2);
 }
 
+fieldset[data-group="episode-type"] > label, fieldset[data-group="season"] > label {
+  /* TODO: Use grid */
+  float: left;
+  width: 20%;
+}
+
 .episode-info p.image {
   float: left;
   margin: 0 var(--spacing-base) 0 0;

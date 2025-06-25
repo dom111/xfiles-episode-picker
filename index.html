@@ -14,8 +14,9 @@
       <section>
         <p>Click the button below to get a random X-Files episode.</p>
         <p>
-          <button class="get-episode">Get Random Episode</button>
+          <button class="get-episode">Get random episode</button>
           <button class="browse">I just want to browse...</button>
+          <button class="search">Search</button>
         </p>
 
         <p>
@@ -50,6 +51,10 @@
           </p>
         </header>
       </section>
+      <section class="search-episodes" hidden>
+        <h2>Search...</h2>
+        <div class="filters-container"></div>
+      </section>
       <section class="episode-list" hidden></section>
     </main>
 
@@ -62,8 +67,7 @@
         href="https://github.com/DigitallyTailored/Classless.css"
         rel="external"
       >
-        Classless.css </a
-      >.
+        Classless.css</a>.
     </footer>
     <template id="episode-details">
       <h2 class="title">
@@ -96,7 +100,20 @@
     </template>
     <template id="filters">
       <div class="filters">
-        <fieldset>
+        <fieldset data-group="text" hidden>
+          <legend>Text search</legend>
+          <label>
+            <input
+              type="search"
+              class="filter"
+              minlength="3"
+              data-filter="text"
+              placeholder="Enter terms..."
+            />
+          </label>
+        </fieldset>
+
+        <fieldset data-group="watched" hidden>
           <legend>Use your data?</legend>
           <label>
             <input type="checkbox" class="filter" data-filter="watched" />
@@ -108,7 +125,8 @@
             >)
           </label>
         </fieldset>
-        <fieldset>
+
+        <fieldset data-group="episode-type" hidden>
           <legend>Episode type</legend>
 
           <label>
@@ -122,7 +140,7 @@
           </label>
         </fieldset>
 
-        <fieldset>
+        <fieldset data-group="season" hidden>
           <legend>Season</legend>
 
           <label>
@@ -216,7 +234,12 @@
           </label>
 
           <label>
-            <input type="checkbox" class="filter" data-filter="season" />
+            <input
+              type="checkbox"
+              class="filter"
+              data-filter="season"
+              data-season="10"
+            />
             Season 10
           </label>
 
@@ -231,8 +254,8 @@
           </label>
         </fieldset>
 
-        <fieldset>
-          <legend>Minimum rating</legend>
+        <fieldset data-group="rating" hidden>
+          <legend>Rating</legend>
           <label>
             <input
               type="range"
@@ -261,8 +284,6 @@
         </fieldset>
       </div>
     </template>
-    <script src="js/components/episode-details.js" type="module"></script>
-    <script src="js/components/episode-filters.js" type="module"></script>
     <script src="js/index.js" type="module"></script>
   </body>
 </html>

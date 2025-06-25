@@ -1,3 +1,6 @@
+import "./components/episode-details.js";
+import "./components/episode-filters.js";
+
 import {
   addWatched,
   getOptions,
@@ -11,12 +14,9 @@ import {
   escapeProperty,
   getCumulativeOffsetTop,
   pickRandom,
-  removeFromList,
 } from "./utilities.js";
 
-const filterEpisodes = (episodes) => {
-  const options = getOptions();
-
+const filterEpisodes = (episodes, options) => {
   if (options.excludeWatched) {
     episodes = episodes.filter((episode) => !isWatched(episode.id));
   }
@@ -40,14 +40,25 @@ const filterEpisodes = (episodes) => {
     );
   }
 
+  const textFields = options.textFields ?? ["name", "summary"];
+
+  if (options.text && options.text.length > 2) {
+    const words = options.text.trim().split(/\s+/);
+
+    episodes = episodes.filter((episode) =>
+      words.some((word) =>
+        textFields.some((textField) =>
+          episode[textField].match(new RegExp(word, "i")),
+        ),
+      ),
+    );
+  }
+
   return episodes;
 };
 
-const episodeData = fetch("data/episode-list-data.json").then((response) =>
-  response.json(),
-);
-
-const getEpisodeData = async () => episodeData;
+const getEpisodeData = async () =>
+  fetch("data/episode-list-data.json").then((response) => response.json());
 
 const episodeElement = (episode) => {
   const container = document.createElement("div"),
@@ -76,11 +87,20 @@ const episodeElement = (episode) => {
   return container.firstElementChild;
 };
 
-const filtersElement = (options) => {
+const filtersElement = (
+  options,
+  {
+    hideText = false,
+    hideWatched = false,
+    hideEpisodeType = false,
+    hideSeason = false,
+    hideRating = false,
+  } = {},
+) => {
   const container = document.createElement("div");
 
   container.innerHTML = `
-      <episode-filters options="${escapeProperty(JSON.stringify(options))}"></episode-filters>
+      <episode-filters options="${escapeProperty(JSON.stringify(options))}"${hideText ? ' data-hide-text="1"' : ""}${hideWatched ? ' data-hide-watched="1"' : ""}${hideEpisodeType ? ' data-hide-episode-type="1"' : ""}${hideSeason ? ' data-hide-season="1"' : ""}${hideRating ? ' data-hide-rating="1"' : ""}></episode-filters>
     `;
 
   return container.firstElementChild;
@@ -88,24 +108,61 @@ const filtersElement = (options) => {
 
 // on ready
 document.addEventListener("DOMContentLoaded", async () => {
-  const episodeList = await getEpisodeData();
+  const episodeData = await getEpisodeData();
+
+  const searchButton = document.querySelector(".search"),
+    searchElement = document.querySelector(".search-episodes"),
+    searchFiltersElement = document.querySelector(
+      ".search-episodes .filters-container",
+    ),
+    mainElement = document.querySelector("main"),
+    getRandomEpisodeButton = document.querySelector(".get-episode"),
+    browseButton = document.querySelector(".browse"),
+    browseSeasonButtons = document.querySelectorAll(
+      ".browse-episodes header button",
+    ),
+    browseElement = document.querySelector(".browse-episodes"),
+    episodeListElement = document.querySelector(".episode-list"),
+    randomEpisodeFiltersElement = document.querySelector(".filters-container");
 
   // hide loading state
-  document.querySelector("main").classList.remove("loading");
+  mainElement.classList.remove("loading");
 
-  // browse episodes actions
-  document.querySelector(".browse").addEventListener("mousedown", (event) => {
+  // random episode action
+  getRandomEpisodeButton.addEventListener("mousedown", (event) => {
     if (event.button !== 0) {
       return;
     }
 
     event.preventDefault();
 
-    const browseElement = document.querySelector(".browse-episodes"),
-      informationElement = document.querySelector(".episode-information");
+    const episodes = filterEpisodes(episodeData, getOptions()),
+      episode = pickRandom(episodes);
 
+    renderResults([episode], episodeListElement);
+
+    browseElement.setAttribute("hidden", "");
+    episodeListElement.removeAttribute("hidden");
+    searchElement.setAttribute("hidden", "");
+
+    window.scrollTo({
+      top: getCumulativeOffsetTop(episodeListElement),
+      behavior: "smooth",
+    });
+  });
+
+  // browse episodes actions
+  browseButton.addEventListener("mousedown", (event) => {
+    if (event.button !== 0) {
+      return;
+    }
+
+    event.preventDefault();
+
+    emptyElement(episodeListElement);
     browseElement.removeAttribute("hidden");
-    informationElement.setAttribute("hidden", "");
+    episodeListElement.setAttribute("hidden", "");
+    searchElement.setAttribute("hidden", "");
 
     window.scrollTo({
       top: getCumulativeOffsetTop(browseElement),
@@ -114,70 +171,41 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   // season selector buttons
-  document
-    .querySelectorAll(".browse-episodes header button")
-    .forEach((button) => {
-      button.addEventListener("mousedown", async (event) => {
-        if (event.button !== 0) {
-          return;
-        }
-
-        event.preventDefault();
-
-        const browseElement = document.querySelector(".browse-episodes"),
-          episodeList = document.querySelector(".episode-list"),
-          season = event.target.dataset.season;
-
-        browseElement.setAttribute("hidden", "");
-        episodeList.setAttribute("hidden", "");
-
-        emptyElement(episodeList);
-
-        (await episodeData)
-          .filter((episode) => episode.season == season)
-          .forEach((episode) => episodeList.append(episodeElement(episode)));
-
-        browseElement.removeAttribute("hidden");
-        episodeList.removeAttribute("hidden");
-      });
-    });
-
-  // random episode action
-  document
-    .querySelector(".get-episode")
-    .addEventListener("mousedown", (event) => {
+  browseSeasonButtons.forEach((button) => {
+    button.addEventListener("mousedown", async (event) => {
       if (event.button !== 0) {
         return;
       }
 
       event.preventDefault();
 
-      const filtered = filterEpisodes(episodeList),
-        episode = pickRandom(filtered),
-        informationElement = document.querySelector(".episode-information"),
-        browseElement = document.querySelector(".browse-episodes"),
-        episodeListElement = document.querySelector(".episode-list");
+      const season = event.target.dataset.season;
 
-      emptyElement(informationElement);
-      informationElement.append(episodeElement(episode));
-      informationElement.removeAttribute("hidden");
       browseElement.setAttribute("hidden", "");
       episodeListElement.setAttribute("hidden", "");
 
-      window.scrollTo({
-        top: getCumulativeOffsetTop(informationElement),
-        behavior: "smooth",
+      emptyElement(episodeListElement);
+
+      const episodes = filterEpisodes(episodeData, {
+        season: [season],
       });
+
+      episodes.forEach((episode) =>
+        episodeListElement.append(episodeElement(episode)),
+      );
+
+      browseElement.removeAttribute("hidden");
+      episodeListElement.removeAttribute("hidden");
     });
+  });
 
   // random episode filters
-  const filtersContainer = document.querySelector(".filters-container"),
-    [showFilters, hideFilters] = document.querySelectorAll(
+  const [showFilters, hideFilters] = document.querySelectorAll(
       ".show-filters, .hide-filters",
     ),
-    filters = filtersElement(getOptions());
+    filters = filtersElement(getOptions(), { hideText: true });
 
-  filtersContainer.appendChild(filters);
+  randomEpisodeFiltersElement.appendChild(filters);
 
   filters.addEventListener("options-changed", (event) => {
     event.stopPropagation();
@@ -192,7 +220,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     event.preventDefault();
 
-    filtersContainer.removeAttribute("hidden");
+    randomEpisodeFiltersElement.removeAttribute("hidden");
     showFilters.setAttribute("hidden", "");
     hideFilters.removeAttribute("hidden");
   });
@@ -204,11 +232,102 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     event.preventDefault();
 
-    filtersContainer.setAttribute("hidden", "");
+    randomEpisodeFiltersElement.setAttribute("hidden", "");
     showFilters.removeAttribute("hidden");
     hideFilters.setAttribute("hidden", "");
   });
-});
+
+  const searchFilters = filtersElement(
+    {
+      episodeTypes: ["motw", "mythology"],
+      excludeWatched: false,
+      minRating: 7,
+      season: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"],
+      text: null,
+    },
+    {
+      hideWatched: true,
+    },
+  );
+
+  searchFiltersElement.appendChild(searchFilters);
+
+  searchFiltersElement.addEventListener("options-changed", (event) => {
+    episodeListElement.setAttribute("hidden", "");
+
+    emptyElement(episodeListElement);
+
+    const episodes = filterEpisodes(episodeData, searchFilters.getOptions());
+
+    renderResults(episodes, episodeListElement);
+
+    episodeListElement.removeAttribute("hidden");
+  });
+
+  searchButton.addEventListener("mousedown", async (event) => {
+    if (event.button !== 0) {
+      return;
+    }
+
+    event.preventDefault();
+
+    emptyElement(episodeListElement);
+
+    const episodes = filterEpisodes(episodeData, searchFilters.getOptions());
+
+    renderResults(episodes, episodeListElement);
+
+    episodeListElement.removeAttribute("hidden");
+    browseElement.setAttribute("hidden", "");
+    searchElement.setAttribute("hidden", "");
+    searchElement.removeAttribute("hidden");
+  });
+
+  document.addEventListener("mousedown", (event) => {
+    if (event.button !== 0) {
+      return;
+    }
+
+    if (event.target.matches(".view-watched")) {
+      event.preventDefault();
+
+      const watchedEpisodeIds = getWatched();
+
+      emptyElement(episodeListElement);
+
+      if (watchedEpisodeIds.length === 0) {
+        episodeListElement.innerHTML = "<p>No episodes watched yet.</p>";
+      } else {
+        const episodes = episodeData.filter((episode) =>
+          watchedEpisodeIds.includes(String(episode.id)),
+        );
+
+        renderResults(episodes, episodeListElement);
+      }
+
+      episodeListElement.removeAttribute("hidden");
+
+      window.scrollTo({
+        top: getCumulativeOffsetTop(episodeListElement),
+        behavior: "smooth",
+      });
+    }
+  });
+}); // DOMContentLoaded
+
+const renderResults = (episodes, container) => {
+  emptyElement(container);
+
+  if (episodes.length > 0) {
+    episodes.forEach((episode) => container.append(episodeElement(episode)));
+
+    return;
+  }
+
+  container.innerHTML = `
+    <p>Sorry, no episodes matched your criteria.</p>
+  `;
+};
 
 // page-level events
 document.addEventListener("watched-status-change", (event) => {
