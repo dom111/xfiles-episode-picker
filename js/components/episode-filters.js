@@ -68,9 +68,9 @@ export class EpisodeFilters extends Base {
       textInput.value = options.text;
     }
 
-    textInput.addEventListener("input", (event) => {
+    textInput.addEventListener("input", () => {
       const options = this.getOptions(),
-        targetValue = event.target.value;
+        targetValue = textInput.value;
 
       if (targetValue.length > 2) {
         options.text = targetValue;
@@ -87,15 +87,13 @@ export class EpisodeFilters extends Base {
       includeWatched.setAttribute("checked", "");
     }
 
-    includeWatched.addEventListener("change", (event) => {
+    includeWatched.addEventListener("change", () => {
       const options = this.getOptions();
 
-      options.excludeWatched = !event.target.checked;
+      options.excludeWatched = !includeWatched.checked;
 
       this.setOptions(options);
     });
-
-    viewWatched.addEventListener("mousedown", (event) => {});
 
     // handle episode types
     [
@@ -108,7 +106,7 @@ export class EpisodeFilters extends Base {
         element.removeAttribute("checked");
       }
 
-      element.addEventListener("change", (event) => {
+      element.addEventListener("change", () => {
         const options = this.getOptions();
 
         if (element.checked && !options.episodeTypes.includes(type)) {
@@ -131,19 +129,19 @@ export class EpisodeFilters extends Base {
         seasonCheckbox.removeAttribute("checked");
       }
 
-      seasonCheckbox.addEventListener("change", (event) => {
+      seasonCheckbox.addEventListener("change", () => {
         const options = this.getOptions();
 
         if (
-          event.target.checked &&
-          !options.season.includes(event.target.dataset.season)
+          seasonCheckbox.checked &&
+          !options.season.includes(seasonCheckbox.dataset.season)
         ) {
-          options.season.push(event.target.dataset.season);
+          options.season.push(seasonCheckbox.dataset.season);
         } else if (
-          !event.target.checked &&
-          options.season.includes(event.target.dataset.season)
+          !seasonCheckbox.checked &&
+          options.season.includes(seasonCheckbox.dataset.season)
         ) {
-          removeFromList(options.season, event.target.dataset.season);
+          removeFromList(options.season, seasonCheckbox.dataset.season);
         }
 
         this.setOptions(options);
@@ -152,10 +150,10 @@ export class EpisodeFilters extends Base {
 
     minRating.value = options.minRating;
 
-    minRating.addEventListener("input", (event) => {
+    minRating.addEventListener("input", () => {
       const options = this.getOptions();
 
-      options.minRating = parseFloat(event.target.value);
+      options.minRating = parseFloat(minRating.value);
 
       this.setOptions(options);
 

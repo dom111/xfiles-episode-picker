@@ -288,7 +288,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    if (event.target.matches(".view-watched")) {
+    const [target] = event.composedPath();
+
+    if (target.matches(".view-watched")) {
       event.preventDefault();
 
       const watchedEpisodeIds = getWatched();
